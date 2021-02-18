@@ -103,7 +103,7 @@ def status():
   
     return "Heute ist " + weekday + " der " + ordinalNumber[dayNum -1] + " " + month_names[monthNum -1] + ". In Neumünster sind aktuell " + temp_city + " Grad."
 
-  def trans(text):
+def trans(text):
     sprachen = ["Afrikanisch", "Irisch", "Albanisch", "Italienisch", "Arabisch", "Japanisch", "Aserbaidschan", "Indisch", "Baskisch", "Koreanisch","Bengalisch","Latein", "Belarusisch", "Lettisch", "Bulgarisch", "Litauisch", "Katalanisch","Mazedonisch", "Chinesisch", "Malaiisch", "Maltesisch", "Kroatisch","Norwegisch", "Tschechisch", "Persisch", "Dänisch", "Polnisch", "Niederländisch", "Portugiesisch", "Englisch","Romänisch","Esperanto","Russisch","Estnisch","Serbisch","Filipino",  "Slovakisch","Finnisch","Slovenisch","Französisch","Spanisch","Galicisch","Suaheli","Georgisch","Schwedisch","Deutsch","Tamil","Griechisch","Telugu","Gujarati","Thailändisch","Haitianisch","Türkisch","Hebräisch","Ukrainsich","Hindi","Urdu","Ungarisch", "Vietnamesisch", "Isländisch","Walisisch","Indonesisch","Jiddisch" ]
     wordList = text.split()
     WordList = wordList
