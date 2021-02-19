@@ -21,6 +21,8 @@ import subprocess
 import requests
 from translate import Translator
 import webbrowser
+from selenium import webdriver
+import yaml
 
 warnings.filterwarnings("ignore")
 
@@ -44,7 +46,7 @@ def recordAudio():
 
 def assistantResponse(text):
     print(text)
-    engine = pyttsx3.init()
+    engine = pyttsx3.init('sapi5')
     engine. setProperty("rate", 170)
     engine.say(text)
     engine.runAndWait()
@@ -368,7 +370,11 @@ def music(s):
         
     player.stop()
 
-
+def login(url,usernameId, username, passwordId, password, submit_buttonId):
+   driver.get(url)
+   driver.find_element_by_id(usernameId).send_keys(username)
+   driver.find_element_by_id(passwordId).send_keys(password)
+   driver.find_element_by_id(submit_buttonId).click()
 
 
 #main
@@ -440,8 +446,11 @@ while True:
             webbrowser.get(chromedir).open("http://youtube.com/")
             
         elif "öffne moodle" in text.lower():
-            chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
-            webbrowser.get(chromedir).open("https://portal.schule.neumuenster.de/univention/portal/")
+            conf = yaml.load(open('loginDetails.yml'))
+            myMlEmail = conf['ml_user']['email']
+            myMlPassword = conf['ml_user']['password']
+            driver = webdriver.Chrome()
+            login("https://portal.schule.neumuenster.de/simplesamlphp/module.php/core/loginuserpass.php?AuthState=_110d1ecc49e53565db44217b463b575b5ea2681e7b%3Ahttps%3A%2F%2Fportal.schule.neumuenster.de%2Fsimplesamlphp%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Dhttps%253A%252F%252Fportal.schule.neumuenster.de%252Funivention%252Fsaml%252Fmetadata%26cookieTime%3D1613733618%26RelayState%3D%252Funivention%252Fportal%252F", "umcLoginUsername", myMlEmail, "umcLoginPassword", myMlPassword, "umcLoginSubmit")
 
         noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
         for phrases in noteSTR:
