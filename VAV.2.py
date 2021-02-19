@@ -429,8 +429,10 @@ while True:
             response = response + statusV
 
         elif "wer ist" in text.lower():
+            assistantResponse("Ich suche auf Wikipedia")
             person = getPerson(text)
             wiki = wikipedia.summary(person, sentences = 2)
+            assistantResponse("Laut Wikipedia")
             response = response + " " + wiki
 
         elif "song" in text.lower():
