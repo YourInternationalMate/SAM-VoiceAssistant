@@ -438,6 +438,10 @@ while True:
         elif "öffne youtube" in text.lower():
             chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
             webbrowser.get(chromedir).open("http://youtube.com/")
+            
+        elif "öffne moodle" in text.lower():
+            chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+            webbrowser.get(chromedir).open("https://portal.schule.neumuenster.de/univention/portal/")
 
         noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
         for phrases in noteSTR:
