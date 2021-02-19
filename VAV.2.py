@@ -134,131 +134,131 @@ def trans(text):
         return "Fehler"
 
 def umwandlungSPR(lang):
-    if lang == "Afrikanisch":
+    if lang == "afrikanisch":
         lang = "af"
-    if lang == "Irisch":
+    if lang == "irisch":
         lang = "ga"
-    if lang == "Albanisch":
+    if lang == "albanisch":
         lang = "sq"
-    if lang == "Italienisch":
+    if lang == "italienisch":
         lang = "it"
-    if lang == "Arabisch":
+    if lang == "arabisch":
         lang = "ar"
-    if lang == "Japanisch":
+    if lang == "japanisch":
         lang = "ja"
-    if lang == "Aserbaidschan":
+    if lang == "aserbaidschan":
         lang = "az"
-    if lang == "Indisch":
+    if lang == "indisch":
         lang = "kn"
-    if lang == "Baskisch":
+    if lang == "baskisch":
         lang = "eu"
-    if lang == "Koreanisch":
+    if lang == "koreanisch":
         lang = "ko"
-    if lang == "Bengalisch":
+    if lang == "bengalisch":
         lang = "bn"
-    if lang == "Latein":
+    if lang == "latein":
         lang = "la"             
-    if lang == "Belarusisch":
+    if lang == "belarusisch":
         lang = "be"
-    if lang == "Lettisch":
+    if lang == "lettisch":
         lang = "lv"
-    if lang == "Bulgarisch":
+    if lang == "bulgarisch":
         lang = "bg"
-    if lang == "Litauisch":
+    if lang == "litauisch":
         lang = "lt"
-    if lang == "Katalanisch":
+    if lang == "katalanisch":
         lang = "ca"
-    if lang == "Mazedonisch":
+    if lang == "mazedonisch":
         lang = "mk"
-    if lang == "Chinesisch":
+    if lang == "chinesisch":
         lang = "zh-CN"
-    if lang == "Malaiisch":     
+    if lang == "malaiisch":     
         lang = "ms"
-    if lang == "Maltesisch":
+    if lang == "maltesisch":
         lang = "mt"
-    if lang == "Kroatisch":
+    if lang == "kroatisch":
         lang = "hr"
-    if lang == "Norwegisch":
+    if lang == "norwegisch":
         lang = "no"
-    if lang == "Tschechisch":
+    if lang == "tschechisch":
         lang = "cs" 
-    if lang == "Persisch":
+    if lang == "persisch":
         lang = "fa"
-    if lang == "Dänisch":
+    if lang == "dänisch":
         lang = "da"
-    if lang == "Polnisch":
+    if lang == "polnisch":
         lang = "pl"
-    if lang == "Niederländisch":
+    if lang == "niederländisch":
         lang = "nl"
-    if lang == "Portugiesisch":
+    if lang == "portugiesisch":
         lang = "pt"
-    if lang == "Englisch":
+    if lang == "englisch":
         lang = "en"
-    if lang == "Romänisch":
+    if lang == "romänisch":
         lang = "ro"
-    if lang == "Esperanto":
+    if lang == "esperanto":
         lang = "eo"
-    if lang == "Russisch":
+    if lang == "russisch":
         lang = "ru"
-    if lang == "Estnisch":
+    if lang == "estnisch":
         lang = "et"
-    if lang == "Serbisch":
+    if lang == "serbisch":
         lang = "sr"
-    if lang == "Filipino":
+    if lang == "filipino":
         lang = "tk"
-    if lang == "Slovakisch":
+    if lang == "slovakisch":
         lang = "sk"
-    if lang == "Finnisch":
+    if lang == "finnisch":
         lang = "fi"
-    if lang == "Slovenisch":
+    if lang == "slovenisch":
         lang = "sl"
-    if lang == "Französisch":
+    if lang == "französisch":
         lang = "fr"
-    if lang == "Spanisch":
+    if lang == "spanisch":
         lang = "es"
-    if lang == "Galicisch":
+    if lang == "galicisch":
         lang = "gl"
-    if lang == "Suaheli":
+    if lang == "suaheli":
         lang = "sw"
-    if lang == "Georgisch": 
+    if lang == "georgisch": 
         lang = "ka"          
-    if lang == "Schwedisch":
+    if lang == "schwedisch":
         lang = "sv"
     if lang == "deutsch":
         lang = "de"
-    if lang == "Tamil":
+    if lang == "tamil":
         lang = "ta"
-    if lang == "Griechisch":
+    if lang == "griechisch":
         lang = "el"
-    if lang == "Telugu":
+    if lang == "telugu":
         lang = "te"
-    if lang == "Gujarati":
+    if lang == "gujarati":
         lang = "gu"
-    if lang == "Thailändisch":
+    if lang == "thailändisch":
         lang = "th"
-    if lang == "Haitianisch":
+    if lang == "haitianisch":
         lang = "ht"
-    if lang == "Türkisch":
+    if lang == "türkisch":
         lang = "tr"
-    if lang == "Hebräisch":
+    if lang == "hebräisch":
         lang = "iw"
-    if lang == "Ukrainsich":
+    if lang == "ukrainsich":
         lang = "uk"
-    if lang == "Hindi":
+    if lang == "hindi":
         lang = "hi"
-    if lang == "Urdu":
+    if lang == "urdu":
         lang = "ur"
-    if lang == "Ungarisch":
+    if lang == "ungarisch":
         lang = "hu"           
-    if lang == "Vietnamesisch":
+    if lang == "vietnamesisch":
         lang = "vi"
-    if lang == "Isländisch":
+    if lang == "isländisch":
         lang = "is"
-    if lang == "Walisisch":
+    if lang == "walisisch":
         lang = "cy"
-    if lang == "Indonesisch":
+    if lang == "indonesisch":
         lang = "id"
-    if lang == "Jiddisch":
+    if lang == "jiddisch":
         lang = "yi"
     return lang
   
@@ -377,7 +377,6 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId):
 
 #main
 
-assistantResponse("Hallo, ich bin Sam dein virtueller Assistent, wie kann ich dir helfen?")
 
 while True:
     text = recordAudio()
