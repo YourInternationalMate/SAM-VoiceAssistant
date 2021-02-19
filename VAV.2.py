@@ -108,15 +108,20 @@ def status():
 
 sprachen = ["Afrikanisch", "Irisch", "Albanisch", "Italienisch", "Arabisch", "Japanisch", "Aserbaidschan", "Indisch", "Baskisch", "Koreanisch","Bengalisch","Latein", "Belarusisch", "Lettisch", "Bulgarisch", "Litauisch", "Katalanisch","Mazedonisch", "Chinesisch", "Malaiisch", "Maltesisch", "Kroatisch","Norwegisch", "Tschechisch", "Persisch", "Dänisch", "Polnisch", "Niederländisch", "Portugiesisch", "Englisch","Romänisch","Esperanto","Russisch","Estnisch","Serbisch","Filipino",  "Slovakisch","Finnisch","Slovenisch","Französisch","Spanisch","Galicisch","Suaheli","Georgisch","Schwedisch","Deutsch","Tamil","Griechisch","Telugu","Gujarati","Thailändisch","Haitianisch","Türkisch","Hebräisch","Ukrainsich","Hindi","Urdu","Ungarisch", "Vietnamesisch", "Isländisch","Walisisch","Indonesisch","Jiddisch" ]
 def trans(text):
+
     wordList = text.split()
+    wordList.pop(0)
     lol = len(wordList)
     lang = wordList[lol-1]
     wordList.pop(lol-1)
     wordList.pop()
-    for i in range(0, len(wordList)):
-        if i + 3 <= len(wordList) - 1 and wordList[i].lower() == "was" and wordList[i+1].lower() == "ist":
+
+    if wordList[0] == "was":
+        wordList.pop(0)
+        if wordList[0] == "ist":
             wordList.pop(0)
-            wordList.pop(0) 
+            #Translaten
+            print(wordList)
             transSTR = str(wordList)
             lang = umwandlungSPR(lang)
             lang = str(lang)
@@ -125,6 +130,8 @@ def trans(text):
             translation = translation.strip("[&#39;")
             translation = translation.strip("&#39;]")
             return translation
+    else: 
+        return "Fehler"
 
 def umwandlungSPR(lang):
     if lang == "Afrikanisch":
@@ -217,7 +224,7 @@ def umwandlungSPR(lang):
         lang = "ka"          
     if lang == "Schwedisch":
         lang = "sv"
-    if lang == "Deutsch":
+    if lang == "deutsch":
         lang = "de"
     if lang == "Tamil":
         lang = "ta"
@@ -432,6 +439,11 @@ while True:
             assistantResponse("Ich suche auf Wikipedia")
             person = getPerson(text)
             wiki = wikipedia.summary(person, sentences = 2)
+            person = getPerson(text)
+            wiki = wikipedia.summary(person, sentences = 2)
+            lang = "de"
+            translator = Translator(to_lang=(lang))
+            wiki = translator.translate(wiki)
             assistantResponse("Laut Wikipedia")
             response = response + " " + wiki
 
