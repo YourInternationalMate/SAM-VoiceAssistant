@@ -1,15 +1,8 @@
-'''
-Autokorrektur 
-Bilder erkennen (was drauf ist)
-'''
-
-
 import speech_recognition as sr
 import urllib.request
 import re
 import vlc
 import pafy
-from time import sleep
 import os
 import pyttsx3
 import datetime
@@ -19,19 +12,26 @@ import random
 import wikipedia 
 import subprocess
 import requests
-from translate import Translator
 import webbrowser
-from selenium import webdriver
 import yaml
+from time import sleep
+from translate import Translator
+from selenium import webdriver
 
 warnings.filterwarnings("ignore")
 
-# Aufnahme und Umwandlung
-def recordAudio():
+'''
+To Do:
+
+Autokorrektur 
+Bilder erkennen (was drauf ist)
+'''
+
+
+def recordAudio():      # Aufnahme und Umwandlung
     r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)
-
     
     data = ""
     try:
@@ -44,15 +44,14 @@ def recordAudio():
 
     return data
 
-def assistantResponse(text):
+def assistantResponse(text):    # Response
     print(text)
     engine = pyttsx3.init('sapi5')
     engine. setProperty("rate", 170)
     engine.say(text)
     engine.runAndWait()
     
-
-def wakeWord(text):
+def wakeWord(text):     # Wake Words
     WAKE_WORDS = ["sam"]
 
     text = text.lower()
@@ -61,13 +60,16 @@ def wakeWord(text):
             return True
         
     return False
-def weather(text):
+
+# Funktionen
+
+def weather(text):      # Wetter
     wordList = text.split()
     for i in range(0, len(wordList)):
         if i +3 <= len(wordList) - 1 and wordList[i].lower() == "in":
             return wordList[i+1]
        
-def status():
+def status():           # Statusbericht
     now = datetime.datetime.now()
     my_date = datetime.datetime.today()
     weekday = calendar.day_name[my_date.weekday()]
@@ -106,8 +108,7 @@ def status():
   
     return "Heute ist " + weekday + " der " + ordinalNumber[dayNum -1] + " " + month_names[monthNum -1] + ". In Neumünster sind aktuell " + temp_city + " Grad."
 
-sprachen = ["Afrikanisch", "Irisch", "Albanisch", "Italienisch", "Arabisch", "Japanisch", "Aserbaidschan", "Indisch", "Baskisch", "Koreanisch","Bengalisch","Latein", "Belarusisch", "Lettisch", "Bulgarisch", "Litauisch", "Katalanisch","Mazedonisch", "Chinesisch", "Malaiisch", "Maltesisch", "Kroatisch","Norwegisch", "Tschechisch", "Persisch", "Dänisch", "Polnisch", "Niederländisch", "Portugiesisch", "Englisch","Romänisch","Esperanto","Russisch","Estnisch","Serbisch","Filipino",  "Slovakisch","Finnisch","Slovenisch","Französisch","Spanisch","Galicisch","Suaheli","Georgisch","Schwedisch","Deutsch","Tamil","Griechisch","Telugu","Gujarati","Thailändisch","Haitianisch","Türkisch","Hebräisch","Ukrainsich","Hindi","Urdu","Ungarisch", "Vietnamesisch", "Isländisch","Walisisch","Indonesisch","Jiddisch" ]
-def trans(text):
+def trans(text):        # Translator
 
     wordList = text.split()
     wordList.pop(0)
@@ -133,7 +134,7 @@ def trans(text):
     else: 
         return "Fehler"
 
-def umwandlungSPR(lang):
+def umwandlungSPR(lang):    # Sprachen Kürzel
     if lang == "afrikanisch":
         lang = "af"
     if lang == "irisch":
@@ -262,7 +263,7 @@ def umwandlungSPR(lang):
         lang = "yi"
     return lang
   
-def getDate():
+def getDate():          # Datum
     now = datetime.datetime.now()
     my_date = datetime.datetime.today()
     weekday = calendar.day_name[my_date.weekday()]
@@ -291,7 +292,7 @@ def getDate():
   
     return "Heute ist " + weekday + " der " + ordinalNumber[dayNum -1] + " " + month_names[monthNum -1] + "."
 
-def getDay():
+def getDay():           # Tag
     my_date = datetime.datetime.today()
     weekday = calendar.day_name[my_date.weekday()]
     if weekday == "Monday":
@@ -311,21 +312,20 @@ def getDay():
     
     return "Heute ist " + weekday + "."
 
-def getPerson(text):
+def getPerson(text):    # Leute auf Wikipedia stalken
     wordList = text.split()
     for i in range(0, len(wordList)):
         if i +3 <= len(wordList) - 1 and wordList[i].lower() == "wer" and wordList[i+1].lower() == "ist":
             return wordList[i+2] + " " + wordList[i+3]
 
-
-def note(text):
+def note(text):         # Notiz erstellen
     date = datetime.datetime.now()
     file_name = str(date).replace(":", "-") + "-note.txt"
     with open(file_name, "w") as f:
         f.write(text)
         subprocess.Popen(["notepad.exe", file_name])
 
-def music(s):
+def music(s):           # Musik abspielen
     s = str(s)
     s = s.replace(" ", "%")
     yturl = "https://www.youtube.com/results?search_query="
@@ -368,19 +368,14 @@ def music(s):
         
     player.stop()
 
-def login(url,usernameId, username, passwordId, password, submit_buttonId):
+def login(url,usernameId, username, passwordId, password, submit_buttonId):     # Auf Moodle anmelden
    driver.get(url)
    driver.find_element_by_id(usernameId).send_keys(username)
    driver.find_element_by_id(passwordId).send_keys(password)
    driver.find_element_by_id(submit_buttonId).click()
 
-def loginG(url,usernameId, username, passwordId, password):
-   driver.get(url)
-   driver.find_element_by_id(usernameId).send_keys(username)
-   driver.find_element_by_id(passwordId).send_keys(password)
 
-#main
-
+# MAIN
 
 while True:
     text = recordAudio()
@@ -390,45 +385,39 @@ while True:
         if "was ist" in text.lower():
             tran = trans(text)
             response = response + tran
-        
-        time_str = ["wie viel uhr", "wie spät"]
-        for phrases in time_str:
-            if phrases in text.lower():
-                now = datetime.datetime.now()
-                if now.hour < 10:
-                    hour = "0" + str(now.hour)
-                else:
-                    hour = str(now.hour)
-                if now.minute < 10:
-                    minute = "0" + str(now.minute)
-                else:
-                    minute = str(now.minute)
-                response = response + " " + "Es ist " + str(hour) + ":" + minute +". "
+                
+        elif "wie viel uhr" or "wie spät" in text.lower(): 
+            now = datetime.datetime.now()
+            if now.hour < 10:
+                hour = "0" + str(now.hour)
+            else:
+                hour = str(now.hour)
+            if now.minute < 10:
+                minute = "0" + str(now.minute)
+            else:
+                minute = str(now.minute)
+            response = response + "" + "Es ist " + str(hour) + ":" + minute +". "
+    
+        elif "der wievielte" or "den wievielten" in text.lower():
+            get_date = getDate() 
+            response = response + "" + get_date   
 
-        date_str = ["der wievielte", "den wievielten"]
-        for phrases in date_str:
-            if phrases in text.lower():
-                get_date = getDate() 
-                response = response + "" + get_date   
-
-        if "welcher tag" and "heute" in text.lower():
+        elif "welcher tag" and "heute" in text.lower():
             response = response + getDay()
             
-        weatherSTR = ["grad", "wetter"]
-        for phrases in weatherSTR:
-            if phrases in text.lower():
-                wetter = weather(text)
-                wetter = str(wetter)
-                user_api = "989fd048fb579d6222799cb5d1e294d9"
-                complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+wetter+"&appid="+user_api
-                api_link = requests.get(complete_api_link)
-                api_data = api_link.json()
-                temp_city = ((api_data['main']['temp']) - 273.15)
-                temp_city = int(temp_city)
-                temp_city = str(temp_city)
-                response = response + temp_city
+        elif "grad" or "wetter" in text.lower():
+            wetter = weather(text)
+            wetter = str(wetter)
+            user_api = "989fd048fb579d6222799cb5d1e294d9"
+            complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+wetter+"&appid="+user_api
+            api_link = requests.get(complete_api_link)
+            api_data = api_link.json()
+            temp_city = ((api_data['main']['temp']) - 273.15)
+            temp_city = int(temp_city)
+            temp_city = str(temp_city)
+            response = response + temp_city
 
-        if "status" in text.lower():
+        elif "status" in text.lower():
             statusV = status()
             response = response + statusV
 
@@ -463,24 +452,12 @@ while True:
             driver = webdriver.Chrome()
             login("https://portal.schule.neumuenster.de/simplesamlphp/module.php/core/loginuserpass.php?AuthState=_110d1ecc49e53565db44217b463b575b5ea2681e7b%3Ahttps%3A%2F%2Fportal.schule.neumuenster.de%2Fsimplesamlphp%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Dhttps%253A%252F%252Fportal.schule.neumuenster.de%252Funivention%252Fsaml%252Fmetadata%26cookieTime%3D1613733618%26RelayState%3D%252Funivention%252Fportal%252F", "umcLoginUsername", myMlEmail, "umcLoginPassword", myMlPassword, "umcLoginSubmit")
 
-        elif "öffne gmx" in text.lower():
-            conf = yaml.load(open('loginDetails.yml'))
-            mygmxEmail = conf['gmx_user']['email']
-            mygmxPassword = conf['gmx_user']['password']
-            driver = webdriver.Chrome()
-            loginG("https://www.gmx.net/?origin=lpc", "freemailLoginUsername", mygmxEmail, "freemailLoginPassword", mygmxPassword)
-            
-        noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
-        for phrases in noteSTR:
-            if phrases in text.lower():
-                assistantResponse("Was möchtest du notieren?")
-                note_text = recordAudio().lower()
-                note(note_text)
+        elif "erstelle eine notiz" or "erstelle eine datei" or "make a note" or "erstell eine notiz" or "notiz erstellen" in text.lower():
+            assistantResponse("Was möchtest du notieren?")
+            note_text = recordAudio().lower()
+            note(note_text)
 
-        
-        if "stop" in text.lower():
+        elif "stop" in text.lower():
             break
 
         assistantResponse(response)
-
-
