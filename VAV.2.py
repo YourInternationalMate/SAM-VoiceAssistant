@@ -311,15 +311,6 @@ def getDay():
     
     return "Heute ist " + weekday + "."
 
-def greeting(text):
-    GREETING_INPUTS = ["hi", "hey", "moin", "na", "hallo", "hello", "hola"]
-    GREETING_RESPONSES = ["wie gehts", "na", "guten tag", "hola", "schön dich zu sehen", "howdy"]
-
-    for word in text.split():
-        if word.lower() in GREETING_INPUTS:
-            return random.choice(GREETING_RESPONSES) + ". "
-    return ""
-
 def getPerson(text):
     wordList = text.split()
     for i in range(0, len(wordList)):
@@ -392,8 +383,11 @@ while True:
     text = recordAudio()
     response = ""
     if wakeWord(text) == True:
-        response = response + greeting(text)
 
+        if "was ist" in text.lower():
+            tran = trans(text)
+            response = response + tran
+        
         time_str = ["wie viel uhr", "wie spät"]
         for phrases in time_str:
             if phrases in text.lower():
@@ -473,11 +467,8 @@ while True:
                 note_text = recordAudio().lower()
                 note(note_text)
 
-        if "was ist" in text.lower():
-            tran = trans(text)
-            response = response + tran
         
-        elif "stop" in text.lower():
+        if "stop" in text.lower():
             break
 
         assistantResponse(response)
