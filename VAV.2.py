@@ -20,6 +20,7 @@ import wikipedia
 import subprocess
 import requests
 from translate import Translator
+import webbrowser
 
 warnings.filterwarnings("ignore")
 
@@ -421,15 +422,22 @@ while True:
             statusV = status()
             response = response + statusV
 
-        if "wer ist" in text.lower():
+        elif "wer ist" in text.lower():
             person = getPerson(text)
             wiki = wikipedia.summary(person, sentences = 2)
             response = response + " " + wiki
 
-        if "song" in text.lower():
+        elif "song" in text.lower():
             assistantResponse("Was willst du suchen?")
             search = recordAudio()           
             music(search)
+            
+        elif "öffne google" in text.lower():
+            webbrowser.open("chrome")
+
+        elif "öffne youtube" in text.lower():
+            chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+            webbrowser.get(chromedir).open("http://youtube.com/")
 
         noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
         for phrases in noteSTR:
@@ -442,7 +450,7 @@ while True:
             tran = trans(text)
             response = response + tran
         
-        if "stop" in text.lower():
+        elif "stop" in text.lower():
             break
 
         assistantResponse(response)
