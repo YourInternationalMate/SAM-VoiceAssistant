@@ -374,6 +374,10 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId):
    driver.find_element_by_id(passwordId).send_keys(password)
    driver.find_element_by_id(submit_buttonId).click()
 
+def loginG(url,usernameId, username, passwordId, password):
+   driver.get(url)
+   driver.find_element_by_id(usernameId).send_keys(username)
+   driver.find_element_by_id(passwordId).send_keys(password)
 
 #main
 
@@ -459,6 +463,13 @@ while True:
             driver = webdriver.Chrome()
             login("https://portal.schule.neumuenster.de/simplesamlphp/module.php/core/loginuserpass.php?AuthState=_110d1ecc49e53565db44217b463b575b5ea2681e7b%3Ahttps%3A%2F%2Fportal.schule.neumuenster.de%2Fsimplesamlphp%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Dhttps%253A%252F%252Fportal.schule.neumuenster.de%252Funivention%252Fsaml%252Fmetadata%26cookieTime%3D1613733618%26RelayState%3D%252Funivention%252Fportal%252F", "umcLoginUsername", myMlEmail, "umcLoginPassword", myMlPassword, "umcLoginSubmit")
 
+        elif "öffne gmx" in text.lower():
+            conf = yaml.load(open('loginDetails.yml'))
+            mygmxEmail = conf['gmx_user']['email']
+            mygmxPassword = conf['gmx_user']['password']
+            driver = webdriver.Chrome()
+            loginG("https://www.gmx.net/?origin=lpc", "freemailLoginUsername", mygmxEmail, "freemailLoginPassword", mygmxPassword)
+            
         noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
         for phrases in noteSTR:
             if phrases in text.lower():
