@@ -377,47 +377,57 @@ def login(url,usernameId, username, passwordId, password, submit_buttonId):     
 
 # MAIN
 
+weatherSTR = ["grad", "wetter"]
+time_str = ["wie viel uhr", "wie spät"]
+date_str = ["der wievielte", "den wievielten"]
+
 while True:
     text = recordAudio()
     response = ""
     if wakeWord(text) == True:
 
+
         if "was ist" in text.lower():
             tran = trans(text)
             response = response + tran
-                
-        elif "wie viel uhr" or "wie spät" in text.lower(): 
-            now = datetime.datetime.now()
-            if now.hour < 10:
-                hour = "0" + str(now.hour)
-            else:
-                hour = str(now.hour)
-            if now.minute < 10:
-                minute = "0" + str(now.minute)
-            else:
-                minute = str(now.minute)
-            response = response + "" + "Es ist " + str(hour) + ":" + minute +". "
-    
-        elif "der wievielte" or "den wievielten" in text.lower():
-            get_date = getDate() 
-            response = response + "" + get_date   
+        
+        
+        for phrases in time_str:
+            if phrases in text.lower():
+                now = datetime.datetime.now()
+                if now.hour < 10:
+                    hour = "0" + str(now.hour)
+                else:
+                    hour = str(now.hour)
+                if now.minute < 10:
+                    minute = "0" + str(now.minute)
+                else:
+                    minute = str(now.minute)
+                response = response + " " + "Es ist " + str(hour) + ":" + minute +". "
 
-        elif "welcher tag" and "heute" in text.lower():
+    
+        if "der wievielte" or "den wievielten" in text.lower():
+            if phrases in text.lower():
+                get_date = getDate() 
+                response = response + "" + get_date   
+
+        if "welcher tag" and "heute" in text.lower():
             response = response + getDay()
             
-        elif "grad" or "wetter" in text.lower():
-            wetter = weather(text)
-            wetter = str(wetter)
-            user_api = "989fd048fb579d6222799cb5d1e294d9"
-            complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+wetter+"&appid="+user_api
-            api_link = requests.get(complete_api_link)
-            api_data = api_link.json()
-            temp_city = ((api_data['main']['temp']) - 273.15)
-            temp_city = int(temp_city)
-            temp_city = str(temp_city)
-            response = response + temp_city
+        for phrases in weatherSTR:
+            if phrases in text.lower():
+                wetter = weather(text)
+                wetter = str(wetter)
+                user_api = "989fd048fb579d6222799cb5d1e294d9"
+                complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+wetter+"&appid="+user_api
+                api_link = requests.get(complete_api_link)
+                api_data = api_link.json()
+                temp_city = ((api_data['main']['temp']) - 273.15)
+                temp_city = int(temp_city)
+                temp_city = str(temp_city)
+                response = response + temp_city
 
-        elif "status" in text.lower():
+        if "status" in text.lower():
             statusV = status()
             response = response + statusV
 
@@ -452,12 +462,15 @@ while True:
             driver = webdriver.Chrome()
             login("https://portal.schule.neumuenster.de/simplesamlphp/module.php/core/loginuserpass.php?AuthState=_110d1ecc49e53565db44217b463b575b5ea2681e7b%3Ahttps%3A%2F%2Fportal.schule.neumuenster.de%2Fsimplesamlphp%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Dhttps%253A%252F%252Fportal.schule.neumuenster.de%252Funivention%252Fsaml%252Fmetadata%26cookieTime%3D1613733618%26RelayState%3D%252Funivention%252Fportal%252F", "umcLoginUsername", myMlEmail, "umcLoginPassword", myMlPassword, "umcLoginSubmit")
 
-        elif "erstelle eine notiz" or "erstelle eine datei" or "make a note" or "erstell eine notiz" or "notiz erstellen" in text.lower():
-            assistantResponse("Was möchtest du notieren?")
-            note_text = recordAudio().lower()
-            note(note_text)
+        noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
+        for phrases in noteSTR:
+            if phrases in text.lower():
+                assistantResponse("Was möchtest du notieren?")
+                note_text = recordAudio().lower()
+                note(note_text)
 
-        elif "stop" in text.lower():
+        
+        if "stop" in text.lower():
             break
 
         assistantResponse(response)
