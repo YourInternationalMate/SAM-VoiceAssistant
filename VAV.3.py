@@ -481,6 +481,8 @@ def who_is_it():     #Gesichtserkennung
 weatherSTR = ["grad", "wetter"]
 time_str = ["wie viel uhr", "wie spät"]
 date_str = ["der wievielte", "den wievielten"]
+noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
+six_Str = ["öffne siege", "öffne Rainbow"]
 
 assistantResponse("Hallo ich bin Sam.")
 
@@ -570,7 +572,16 @@ while True:
             driver = webdriver.Chrome()
             login("https://portal.schule.neumuenster.de/simplesamlphp/module.php/core/loginuserpass.php?AuthState=_110d1ecc49e53565db44217b463b575b5ea2681e7b%3Ahttps%3A%2F%2Fportal.schule.neumuenster.de%2Fsimplesamlphp%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Dhttps%253A%252F%252Fportal.schule.neumuenster.de%252Funivention%252Fsaml%252Fmetadata%26cookieTime%3D1613733618%26RelayState%3D%252Funivention%252Fportal%252F", "umcLoginUsername", myMlEmail, "umcLoginPassword", myMlPassword, "umcLoginSubmit")
 
-        noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
+        elif "öffne libreoffice" in text.lower():
+            subprocess.Popen("C:\Program Files\LibreOffice\program\swriter.exe")
+
+        elif "öffne roller champions" in text.lower():
+            subprocess.Popen("E:\Roller Champion\Roller Champions\Roller.exe")
+        
+        for phrases in six_Str:
+            if phrases in text.lower():
+                subprocess.Popen("E:\Rainbow Six Siege\Tom Clancy's Rainbow Six Siege\RainbowSix.exe")
+
         for phrases in noteSTR:
             if phrases in text.lower():
                 assistantResponse("Was möchtest du notieren?")
