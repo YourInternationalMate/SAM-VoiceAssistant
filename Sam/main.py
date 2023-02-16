@@ -69,12 +69,6 @@ def wakeWord(text):     # Wake Words
             return True
         
     return False
- 
-def login(url,usernameId, username, passwordId, password, submit_buttonId):     # Auf Moodle anmelden
-   driver.get(url)
-   driver.find_element_by_id(usernameId).send_keys(username)
-   driver.find_element_by_id(passwordId).send_keys(password)
-   driver.find_element_by_id(submit_buttonId).click()
 
 
 # MAIN
@@ -84,10 +78,11 @@ time_str = ["wie viel uhr", "wie spät"]
 date_str = ["der wievielte", "den wievielten"]
 noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
 google_str = ["googlen", "google", "googeln"]
+who_str= ["wer bist du", "was bist du"]
 
 assistantResponse("Hallo ich bin Sam.")
 
-while True:
+def main():
     text = recordAudio()
     response = ""
     if wakeWord(text) == True:
@@ -98,10 +93,13 @@ while True:
                 ergebnis = google(text)
                 chromedir= 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
                 webbrowser.get(chromedir).open(ergebnis)
+                response = "Hier ist das Ergebnis."
+                return response
 
         if "was ist" in text.lower():
             tran = translatorfunction.trans(text)
             response = response + tran
+            return response
         
         
         for phrases in time_str:
@@ -116,15 +114,18 @@ while True:
                 else:
                     minute = str(now.minute)
                 response = response + " " + "Es ist " + str(hour) + ":" + minute +". "
+                return response
 
     
         if "der wievielte" or "den wievielten" in text.lower():
             if phrases in text.lower():
                 get_date = info.getDate() 
-                response = response + "" + get_date   
+                response = response + "" + get_date
+                return response  
 
-        if "welcher tag" and "heute" in text.lower():
+        elif "welcher tag" and "heute" in text.lower():
             response = response + info.getDay()
+            return response
             
         for phrases in weatherSTR:
             if phrases in text.lower():
@@ -138,16 +139,20 @@ while True:
                 temp_city = int(temp_city)
                 temp_city = str(temp_city)
                 response = response + temp_city
+                return response
 
         if "status" in text.lower():
             statusV = info.status()
             response = response + statusV
+            return response
 
         elif "wer ist das" in text.lower():
             systemfunctions.takeScreenshot()
             recognizer.who_is_it()
             sleep(10)
             os.remove("unknown_faces/test.jpg")
+            response = "Die Identifikation ist ferig."
+            return response
 
         elif "wer ist" in text.lower():
             assistantResponse("Ich suche auf Wikipedia")
@@ -160,6 +165,7 @@ while True:
             wiki = translatorfunction.translate(wiki)
             assistantResponse("Laut Wikipedia")
             response = response + " " + wiki
+            return response
 
         # elif "song" in text.lower():
         #     assistantResponse("Was willst du suchen?")
@@ -168,10 +174,14 @@ while True:
             
         elif "öffne google" in text.lower():
             webbrowser.open("chrome")
+            response = "Google wurde geöffnet."
+            return response
 
         elif "öffne youtube" in text.lower():
             chromedir= 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
             webbrowser.get(chromedir).open("http://youtube.com/")
+            response = "Youtube wurde geöffnet."
+            return response
             
         elif "öffne moodle" in text.lower():
             conf = yaml.safe_load(open("loginDetails.yml", "r"))
@@ -186,21 +196,36 @@ while True:
             search2.send_keys(myMlPassword)
             search3 = driver.find_element(By.ID, "umcLoginSubmit")
             driver.execute_script("arguments[0].click();", search3)
+            response = "Moodle wurde geöffnet."
+            return response
 
         elif "öffne libreoffice" in text.lower():
             subprocess.Popen("C:\Program Files\LibreOffice\program\swriter.exe")
+            response = "LibreOffice wurde gestartet."
+            return response
 
         for phrases in noteSTR:
             if phrases in text.lower():
                 assistantResponse("Was möchtest du notieren?")
                 note_text = recordAudio().lower()
                 systemfunctions.note(note_text)
+                response = "Notiz wurde erstellt."
+                return response
+
+        for phrases in who_str:
+            if phrases in text.lower():
+                response = "Ich bin Sam, ein Virtueller Assistent."
+                return response
 
         if "screenshot" in text.lower():
             systemfunctions.takeScreenshot()
+            response = "Ein Screenshot wurde erstellt."
+            return response
 
 
-        if "stop" in text.lower():
-            break
+        elif "stop" in text.lower():
+            quit()
 
-        assistantResponse(response)
+
+while True: 
+    assistantResponse(main())
