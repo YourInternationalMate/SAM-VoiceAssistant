@@ -22,6 +22,7 @@ import systemfunctions
 import translatorfunction
 import weather
 import wiki
+import google
 
 
 
@@ -53,7 +54,9 @@ def recordAudio():      # Aufnahme und Umwandlung
 def assistantResponse(text):    # Response
     print(text)
     engine = pyttsx3.init('sapi5')
-    engine. setProperty("rate", 170)
+    voices = engine.getProperty("voices")
+    engine.setProperty("voice", voices[0].id)
+    engine.setProperty("rate", 170)
     engine.say(text)
     engine.runAndWait()
     
@@ -80,6 +83,7 @@ weatherSTR = ["grad", "wetter"]
 time_str = ["wie viel uhr", "wie spät"]
 date_str = ["der wievielte", "den wievielten"]
 noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
+google_str = ["googlen", "google", "googeln"]
 
 assistantResponse("Hallo ich bin Sam.")
 
@@ -87,7 +91,13 @@ while True:
     text = recordAudio()
     response = ""
     if wakeWord(text) == True:
+        text = text.lower().strip("sam")
 
+        for phrases in google_str:
+            if phrases in text.lower():
+                ergebnis = google(text)
+                chromedir= 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
+                webbrowser.get(chromedir).open(ergebnis)
 
         if "was ist" in text.lower():
             tran = translatorfunction.trans(text)
@@ -160,7 +170,7 @@ while True:
             webbrowser.open("chrome")
 
         elif "öffne youtube" in text.lower():
-            chromedir= 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe %s'
+            chromedir= 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
             webbrowser.get(chromedir).open("http://youtube.com/")
             
         elif "öffne moodle" in text.lower():
