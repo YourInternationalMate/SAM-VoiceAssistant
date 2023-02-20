@@ -2,7 +2,7 @@
 Sam ist virtueller Assistent, der unterschiedliche Aufgaben erfüllen kann.
 
 ## FUNCTIONS
-Aktuell kann Sam... <br>
+### Aktuell kann Sam... <br>
 ...Notizen erstellen <br>
 ...Screenshots machen <br>
 ...Moodle öffnen und sich automatisch anmelden <br>
