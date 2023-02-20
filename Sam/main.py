@@ -36,7 +36,7 @@ Stimmenerkennung
 
 def recordAudio():      # Aufnahme und Umwandlung
     r = sr.Recognizer()
-    mic = sr.Microphone(device_index=2) # Du musst das Device_Index einfach löschen, sonst wird das bei dir wahrscheinlich nichts.. du kannst es auch mal mit probieren.. but.. I doubt it
+    mic = sr.Microphone() # Falls das Mikrofon nicht erkannt wird muss man hier den "INDEX=" auf den passenden Eingang setzen (1,2,3)
     with mic as source:
         audio = r.listen(source)
     
