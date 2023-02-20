@@ -2,15 +2,15 @@
 Sam ist virtueller Assistent, der unterschiedliche Aufgaben erfüllen kann.
 
 ## FUNCTIONS
-Aktuell kann Sam.. <br>
-.Notizen erstellen <br>
-.Screenshots machen <br>
-.Moodle öffnen und sich automatisch anmelden <br>
-.Googlen <br>
-.Nach Menschen auf Wikipedia suchen <br>
-.Gesichter erkennen <br>
-.über das Wetter informieren <br>
-.Zeit und Datum nennen <br>
+Aktuell kann Sam... <br>
+...Notizen erstellen <br>
+...Screenshots machen <br>
+...Moodle öffnen und sich automatisch anmelden <br>
+...Googlen <br>
+...Nach Menschen auf Wikipedia suchen <br>
+...Gesichter erkennen <br>
+...über das Wetter informieren <br>
+...Zeit und Datum nennen <br>
 
 ## HOW TO USE
 
