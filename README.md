@@ -11,6 +11,9 @@ Sam ist virtueller Assistent, der unterschiedliche Aufgaben erfüllen kann.
 ...Gesichter erkennen <br>
 ...über das Wetter informieren <br>
 ...Zeit und Datum nennen <br>
+...Google öffnen <br>
+...Youtube öffnen <br>
+...LibreOffice öffnen <br>
 
 ## HOW TO USE
 
@@ -21,7 +24,13 @@ Um Sam benutzen zu können, benötigt man Python 3.8 und alle nötigen pip Insta
 
 ### SET UP
 Zum generellen benutzen von Sam muss man das richtige Mikrofon konfigurieren (siehe Kommentar in main.py). <br>
+
 Zur automatischen Anmeldung bei Moodle ist es erforderlich seine Daten in der Yaml Datei zu hinterlegen. <br>
+
+Zum öffnen von Links (Google, YouTube) muss Chrome installiert sein und der Path stimmen. <br>
+
+Um LibreOffice zu öffnen muss der Path stimmen. <br>
+
 Zum erkennen von Gesichtern, muss bereits ein Bild der Person in der Datenbank sein. <br>
 
 
