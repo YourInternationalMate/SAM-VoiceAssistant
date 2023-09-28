@@ -1,215 +1,133 @@
-# Module
 import speech_recognition as sr
-import os
 import pyttsx3
-import datetime
 import warnings
-from time import sleep
-import wikipedia 
-import subprocess
 import requests
 import webbrowser
-import yaml
-from selenium import webdriver
-from selenium.webdriver.common.by import By
 
-# Funktionen
-
+# Importieren Sie Ihre eigenen Module hier
 import info
-#import musicplayer
-import recognizer
 import systemfunctions
 import translatorfunction
 import weather
 import wiki
 import google
 
-
-
 warnings.filterwarnings("ignore")
 
-'''
-To Do:
-Stimmenerkennung
-'''
+class Assistant:
+    def __init__(self):
+        self.recognizer = sr.Recognizer()
+        self.microphone = sr.Microphone()
+        self.engine = pyttsx3.init('sapi5')
+        self.engine.setProperty("rate", 170)
+        self.voices = self.engine.getProperty("voices")
+        self.engine.setProperty("voice", self.voices[0].id)
 
+    def record_audio(self):
+        with self.microphone as source:
+            audio = self.recognizer.listen(source)
+        try:
+            data = self.recognizer.recognize_google(audio, language="de")
+            print(data)
+            return data.lower()
+        except sr.UnknownValueError:
+            print("Das habe ich leider nicht verstanden")
+            return ""
+        except sr.RequestError as e:
+            print("Service-Fehler: " + str(e))
+            return ""
 
-def recordAudio():      # Aufnahme und Umwandlung
-    r = sr.Recognizer()
-    mic = sr.Microphone() # Falls das Mikrofon nicht erkannt wird muss man hier den "INDEX=" auf den passenden Eingang setzen (1,2,3)
-    with mic as source:
-        audio = r.listen(source)
-    
-    data = ""
-    try:
-        data = r.recognize_google(audio, language="de")
-        print(data)
-    except sr.UnknownValueError:
-        print("Das habe ich leider nicht verstanden")
-    except sr.RequestError as e:
-        print("service error"+ e)
+    def assistant_response(self, text):
+        print(text)
+        self.engine.say(text)
+        self.engine.runAndWait()
 
-    return data
+    def google_search(self, query):
+        # Führen Sie die Google-Suchfunktion aus
+        response = "Hier ist das Ergebnis."
+        webbrowser.open(f"https://www.google.com/search?q={query}")
+        return response
 
-def assistantResponse(text):    # Response
-    print(text)
-    engine = pyttsx3.init('sapi5')
-    voices = engine.getProperty("voices")
-    engine.setProperty("voice", voices[0].id)
-    engine.setProperty("rate", 170)
-    engine.say(text)
-    engine.runAndWait()
-    
-def wakeWord(text):     # Wake Words
-    WAKE_WORDS = ["sam"]
+    def run(self):
+        self.assistant_response("Hallo ich bin Sam.")
 
-    text = text.lower()
-    for phrase in WAKE_WORDS:
-        if phrase in text:
-            return True
-        
-    return False
+        while True:
+            text = self.record_audio()
+            response = ""
 
+            if "google" in text:
+                query = text.replace("google", "").strip()
+                response = self.google_search(query)
 
-# MAIN
+            if "was ist" in text:
+                translation = translatorfunction.trans(text)
+                response = translation
 
-weatherSTR = ["grad", "wetter"]
-time_str = ["wie viel uhr", "wie spät"]
-date_str = ["der wievielte", "den wievielten"]
-noteSTR = ["erstelle eine notiz", "erstelle eine datei", "make a note", "erstell eine notiz", "notiz erstellen"]
-google_str = ["googlen", "google", "googeln"]
-who_str= ["wer bist du", "was bist du"]
+            if "wie viel uhr" in text or "wie spät" in text:
+                time = info.get_time()
+                response = f"Es ist {time} Uhr."
 
-assistantResponse("Hallo ich bin Sam.")
+            if "der wievielte" in text or "den wievielten" in text:
+                date = info.get_date()
+                response = f"Heute ist der {date}."
 
-def main():
-    text = recordAudio()
-    response = ""
-    if wakeWord(text) == True:
-        text = text.lower().strip("sam")
+            if "welcher tag heute" in text:
+                day = info.get_day()
+                response = f"Heute ist {day}."
 
-        for phrases in google_str:
-            if phrases in text.lower():
-                ergebnis = google(text)
-                chromedir= 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
-                webbrowser.get(chromedir).open(ergebnis)
-                response = "Hier ist das Ergebnis."
-                return response
+            if "grad" in text or "wetter" in text:
+                weather_info = weather.weather(text)
+                response = f"Die Temperatur beträgt {weather_info} Grad Celsius."
 
-        if "was ist" in text.lower():
-            tran = translatorfunction.trans(text)
-            response = response + tran
-            return response
-        
-        
-        for phrases in time_str:
-            if phrases in text.lower():
-                now = datetime.datetime.now()
-                if now.hour < 10:
-                    hour = "0" + str(now.hour)
-                else:
-                    hour = str(now.hour)
-                if now.minute < 10:
-                    minute = "0" + str(now.minute)
-                else:
-                    minute = str(now.minute)
-                response = response + " " + "Es ist " + str(hour) + ":" + minute +". "
-                return response
+            if "status" in text:
+                status_info = info.status()
+                response = f"Der Status ist: {status_info}."
 
-    
-        if "der wievielte" or "den wievielten" in text.lower():
-            if phrases in text.lower():
-                get_date = info.getDate() 
-                response = response + "" + get_date
-                return response  
+            if "wer ist das" in text:
+                systemfunctions.take_screenshot()
+                recognizer.who_is_it()
+                sleep(10)
+                systemfunctions.remove_screenshot()
+                response = "Die Identifikation ist fertig."
 
-        elif "welcher tag" and "heute" in text.lower():
-            response = response + info.getDay()
-            return response
-            
-        for phrases in weatherSTR:
-            if phrases in text.lower():
-                wetter = weather.weather(text)
-                wetter = str(wetter)
-                user_api = "989fd048fb579d6222799cb5d1e294d9"
-                complete_api_link = "https://api.openweathermap.org/data/2.5/weather?q="+wetter+"&appid="+user_api
-                api_link = requests.get(complete_api_link)
-                api_data = api_link.json()
-                temp_city = ((api_data['main']['temp']) - 273.15)
-                temp_city = int(temp_city)
-                temp_city = str(temp_city)
-                response = response + temp_city
-                return response
+            if "wer ist" in text:
+                self.assistant_response("Ich suche auf Wikipedia.")
+                person = wiki.get_person(text)
+                wiki_summary = wiki.get_summary(person)
+                translation = translatorfunction.trans(wiki_summary)
+                self.assistant_response(f"Laut Wikipedia: {translation}")
+                response = f"Laut Wikipedia: {translation}"
 
-        if "status" in text.lower():
-            statusV = info.status()
-            response = response + statusV
-            return response
+            if "öffne google" in text:
+                webbrowser.open("https://www.google.com")
+                response = "Google wurde geöffnet."
 
-        elif "wer ist das" in text.lower():
-            systemfunctions.takeScreenshot()
-            recognizer.who_is_it()
-            sleep(10)
-            os.remove("unknown_faces/test.jpg")
-            response = "Die Identifikation ist ferig."
-            return response
+            if "öffne youtube" in text:
+                webbrowser.open("https://www.youtube.com")
+                response = "Youtube wurde geöffnet."
 
-        elif "wer ist" in text.lower():
-            assistantResponse("Ich suche auf Wikipedia")
-            person = wiki.getPerson(text)
-            wiki = wikipedia.summary(person, sentences = 2)
-            person = wiki.getPerson(text)
-            wiki = wikipedia.summary(person, sentences = 2)
-            lang = "de"
-            translator = translatorfunction.Translator(to_lang=(lang))
-            wiki = translatorfunction.translate(wiki)
-            assistantResponse("Laut Wikipedia")
-            response = response + " " + wiki
-            return response
+            if "öffne libreoffice" in text:
+                systemfunctions.open_libreoffice()
+                response = "LibreOffice wurde gestartet."
 
-        # elif "song" in text.lower():
-        #     assistantResponse("Was willst du suchen?")
-        #     search = recordAudio()           
-        #     musicplayer.music(search)
-            
-        elif "öffne google" in text.lower():
-            webbrowser.open("chrome")
-            response = "Google wurde geöffnet."
-            return response
-
-        elif "öffne youtube" in text.lower():
-            chromedir= 'C:/Program Files/Google/Chrome/Application/chrome.exe %s'
-            webbrowser.get(chromedir).open("http://youtube.com/")
-            response = "Youtube wurde geöffnet."
-            return response
-
-        elif "öffne libreoffice" in text.lower():
-            subprocess.Popen("C:\Program Files\LibreOffice\program\swriter.exe")
-            response = "LibreOffice wurde gestartet."
-            return response
-
-        for phrases in noteSTR:
-            if phrases in text.lower():
-                assistantResponse("Was möchtest du notieren?")
-                note_text = recordAudio().lower()
-                systemfunctions.note(note_text)
+            if "erstelle eine notiz" in text:
+                self.assistant_response("Was möchtest du notieren?")
+                note_text = self.record_audio().lower()
+                systemfunctions.create_note(note_text)
                 response = "Notiz wurde erstellt."
-                return response
 
-        for phrases in who_str:
-            if phrases in text.lower():
-                response = "Ich bin Sam, ein Virtueller Assistent."
-                return response
+            if "wer bist du" in text or "was bist du" in text:
+                response = "Ich bin Sam, ein virtueller Assistent."
 
-        if "screenshot" in text.lower():
-            systemfunctions.takeScreenshot()
-            response = "Ein Screenshot wurde erstellt."
-            return response
+            if "screenshot" in text:
+                systemfunctions.take_screenshot()
+                response = "Ein Screenshot wurde erstellt."
 
+            if "stop" in text:
+                exit()
 
-        elif "stop" in text.lower():
-            quit()
+            self.assistant_response(response)
 
-
-while True: 
-    assistantResponse(main())
+if __name__ == "__main__":
+    assistant = Assistant()
+    assistant.run()
