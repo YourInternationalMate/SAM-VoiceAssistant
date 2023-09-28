@@ -1,11 +1,10 @@
 # SAM
-Sam ist virtueller Assistent, der unterschiedliche Aufgaben erfüllen kann.
+Sam ist ein virtueller Assistent, der unterschiedliche Aufgaben erfüllen kann.
 
 ## FUNCTIONS
 ### Aktuell kann Sam... <br>
 ...Notizen erstellen <br>
 ...Screenshots machen <br>
-...Moodle öffnen und sich automatisch anmelden <br>
 ...Googlen <br>
 ...Nach Menschen auf Wikipedia suchen <br>
 ...Gesichter erkennen <br>
@@ -24,8 +23,6 @@ Um Sam benutzen zu können, benötigt man Python 3.8 und alle nötigen pip Insta
 
 ### SET UP
 Zum generellen benutzen von Sam muss man das richtige Mikrofon konfigurieren (siehe Kommentar in main.py). <br>
-
-Zur automatischen Anmeldung bei Moodle ist es erforderlich seine Daten in der Yaml Datei zu hinterlegen. <br>
 
 Zum öffnen von Links (Google, YouTube) muss Chrome installiert sein und der Path stimmen. <br>
 
