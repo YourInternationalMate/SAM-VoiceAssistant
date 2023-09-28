@@ -28,7 +28,7 @@ Zum öffnen von Links (Google, YouTube) muss Chrome installiert sein und der Pat
 
 Um LibreOffice zu öffnen muss der Path stimmen. <br>
 
-Zum erkennen von Gesichtern, muss bereits ein Bild der Person in der Datenbank sein. <br>
+Zum erkennen von Gesichtern, muss bereits ein Bild der Person in einen Ordner gespeichert sein, damit das Modul seine Arbeit machen kann (Ordnername siehe Obama). <br>
 
 
 
