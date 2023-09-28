@@ -182,22 +182,6 @@ def main():
             webbrowser.get(chromedir).open("http://youtube.com/")
             response = "Youtube wurde geöffnet."
             return response
-            
-        elif "öffne moodle" in text.lower():
-            conf = yaml.safe_load(open("loginDetails.yml", "r"))
-            myMlEmail = conf['ml_user']['email']
-            myMlPassword = conf['ml_user']['password']
-            driver = webdriver.Chrome()
-            driver.get("https://portal.schule.neumuenster.de/simplesamlphp/module.php/core/loginuserpass.php?AuthState=_f4fd7ed6c4073de1d968f6c2ef8823986b102cd858%3Ahttps%3A%2F%2Fportal.schule.neumuenster.de%2Fsimplesamlphp%2Fsaml2%2Fidp%2FSSOService.php%3Fspentityid%3Dhttps%253A%252F%252Fportal.schule.neumuenster.de%252Funivention%252Fsaml%252Fmetadata%26cookieTime%3D1676398292%26RelayState%3D%252Funivention%252Fportal%252F")
-            sleep(3)
-            search1 = driver.find_element(By.ID, "umcLoginUsername")
-            search1.send_keys(myMlEmail)
-            search2 = driver.find_element(By.ID, "umcLoginPassword")
-            search2.send_keys(myMlPassword)
-            search3 = driver.find_element(By.ID, "umcLoginSubmit")
-            driver.execute_script("arguments[0].click();", search3)
-            response = "Moodle wurde geöffnet."
-            return response
 
         elif "öffne libreoffice" in text.lower():
             subprocess.Popen("C:\Program Files\LibreOffice\program\swriter.exe")
